@@ -29,6 +29,27 @@ class SocialController extends Controller
         ])->with('#reviews');
     }
 
+    public function insertComment(Request $request)
+    {
+        if(!Auth::check())
+        {   
+            //El usuario no está logado
+            return redirect()->back();
+        }
+                
+        DB::table('comments')->insert([
+            'user' => Auth::user()->id,
+            'review' => $request->review_id,
+            'content' => $request->comment,
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP'),
+        ]);
+        return redirect()->route('films.dedicated.review.comment', [
+            'id' => $request->id,
+            'review' => $request->review_id,
+        ]);
+    }
+
     public function index(Request $request)
     {
         $film = DB::table('films')
@@ -50,6 +71,18 @@ class SocialController extends Controller
                         ->select('reviews.*', 'users.name as user')
                         ->first();
 
+        $review->comments = DB::table('comments')
+                                ->where('review', $review->id)
+                                ->leftJoin('users', 'users.id', '=', 'comments.user')
+                                ->select('comments.*', 'users.name as user')
+                                ->get();
+
+        foreach ($review->comments as $comment) {
+                    $review->comment = DB::table('comments')
+                                            ->where('content')
+                                            ->get();                         
+                }
+                
         return view('pages.dedicated.review', [
             'film' => $film,
             'review' => $review

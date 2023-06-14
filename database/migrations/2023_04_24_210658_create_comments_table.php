@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user')->nullable()->comment('id del usuario');
             $table->unsignedBigInteger('review')->comment('id de la review');
             $table->mediumText('content');
-            $table->integer('rating')->comment('La puntuación del comentario');
+            $table->integer('rating')->default(0)->comment('La puntuación del comentario');
             $table->timestamps();
 
             $table->foreign('user')->references('id')->on('users');

@@ -22,48 +22,7 @@
               <a class="nav-link" href="{{route('films')}}">Películas</a>
             @endif
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Reparto
-            </a>
-            <ul class="dropdown-menu">
-              <li>
-                @if (Route::is('directors'))
-                <a class="nav-link active" aria-current="page" href="#">Directores</a>
-              @else
-                <a class="nav-link" href="{{route('directors')}}">Directores</a>
-              @endif
-              </li>
-              <li>
-                @if (Route::is('writers'))
-                <a class="nav-link active" aria-current="page" href="#">Guionistas</a>
-              @else
-                <a class="nav-link" href="{{route('writers')}}">Guionistas</a>
-              @endif
-              </li>
-              <li>
-                @if (Route::is('actors'))
-                <a class="nav-link active" aria-current="page" href="#">Actores</a>
-              @else
-                <a class="nav-link" href="{{route('actors')}}">Actores</a>
-              @endif
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            @if (Route::is('reviews'))
-            <a class="nav-link active" aria-current="page" href="#">Reseñas</a>
-          @else
-            <a class="nav-link" href="{{route('reviews')}}">Reseñas</a>
-          @endif
-          </li>
         </ul>
-
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Escribe aquí..." aria-label="Search">
-          <button class="btn btn-outline-light" type="submit"><i class="las la-search la-2x align-middle"></i> <span class="align-middle"></span></button>
-        </form>
-
         <div class="d-flex gap-2">
           @guest
             <a href="{{ route('register') }}" class="btn btn-light align-middle"><i class="lab la-wpforms la-2x align-middle"></i> <span class="align-middle">Registrarse</span></a>
@@ -71,6 +30,9 @@
           @endguest
           @auth
             <a href="{{ route('profile') }}" class="btn btn-light align-middle"><i class="las la-user-circle la-2x align-middle"></i> <span class="align-middle">Mi perfil</span></a>
+            @if (Auth::user()->type == 1)
+              <a href="{{ route('panel') }}" class="btn btn-secondary align-middle"><i class="las la-th-list la-2x align-middle"></i> <span class="align-middle">Panel</span></a>
+            @endif
             <a href="{{ route('logout') }}" class="btn btn-dark align-middle"><i class="las la-sign-out-alt la-2x align-middle"></i> <span      class="align-middle">Salir</span></a> 
           @endauth      
         </div>

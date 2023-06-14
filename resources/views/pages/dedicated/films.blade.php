@@ -7,8 +7,6 @@
         
     </style>
     <div class="container pb-3 pt-5">
-        {{-- @dd($films) --}}
-       
         <div class="row mb-5">
             <div class="col-3">
                 @php($img = $film->image ?? "../not_found.jpeg")
@@ -35,6 +33,32 @@
                             <tr>
                                 <th class="px-4" style="width: 1px; white-space: nowrap;">Género</th>
                                 <td class="px-4">{{ $film->genre->implode('name',', ') }}</td>
+                            </tr>
+                            <tr>
+                                <th class="px-4" style="width: 1px; white-space: nowrap;">Puntuación</th>
+                                <td class="px-4">
+                                    @php($full = floor($film->reviews->avg('score')))
+                                    @php($half = abs($film->reviews->avg('score') - $full))
+                                    @php($stars = 0)
+                
+                                    @foreach (range(0, $full) as $item)
+                                        @if($item > 0)
+                                            <i class="las la-star text-warning"></i>
+                                            @php($stars++)
+                                        @endif
+                                    @endforeach
+                
+                                    @if ($half > 0)
+                                        <i class="lar la-star-half text-warning"></i>
+                                        @php($stars++)
+                                    @endif
+                
+                                    @if ($stars == 0)
+                                        <i class="lar la-star text-warning"></i>
+                                    @endif
+
+                                    <span>({{ ($film->reviews->avg('score')) }})</span>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

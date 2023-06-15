@@ -24,6 +24,7 @@ class ProfileController extends Controller
                     ->join('users', 'users.id', '=', 'reviews.user')
                     ->join('films', 'films.id', '=', 'reviews.film')
                     ->select('reviews.*', 'users.name as user', 'films.name as film', 'films.id as film_id')
+                    ->where("reviews.user", Auth::user()->id)
                     ->get();
 
         foreach ($reviews as $review) {
